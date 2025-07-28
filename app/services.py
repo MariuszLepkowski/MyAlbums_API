@@ -23,6 +23,14 @@ def get_random_album():
     random_album = random.choice(albums)
     return random_album
 
+def create_album(data):
+    new_album = Album(artist=data["artist"], title=data["title"])
+
+    db.session.add(new_album)
+    db.session.commit()
+
+    return new_album
+
 
 
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.services import show_welcome_message,get_all_albums, get_album_by_id, get_random_album
+from app.services import show_welcome_message,get_all_albums, get_album_by_id, get_random_album, create_album
 
 
 api = Blueprint('api', __name__)
@@ -37,3 +37,34 @@ def pick_random_album():
         "artist": random_album.artist,
         "title": random_album.title},
     ), 200
+
+@api.route('/add-album/', methods=['POST'])
+def add_album():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No input data provided"}), 400
+
+    required_fields = ("artist", "title")
+    missing_keys = [key for key in required_fields if key not in data]
+    empty_values = [key for key in required_fields if not data.get(key)]
+
+    if missing_keys:
+        return jsonify({"error": f"Missing keys: {', '.join(missing_keys)}"}), 400
+
+    if empty_values:
+        return jsonify({"error": f"Empty values for: {', '.join(empty_values)}"}), 400
+
+    album = create_album(data)
+
+    return jsonify({
+        "message": f"Successfully added {album.artist} - {album.title} to the database."
+    }), 201
+
+"""
+curl -X POST http://localhost:5000/add-album/ \
+-H "Content-Type: application/json" \
+-d '{"artist": "artist_test", "title": "title_test"}'
+"""
+
+
