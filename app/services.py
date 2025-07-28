@@ -1,6 +1,7 @@
 from app.models import Album
 from app.extensions import db
 from sqlalchemy.exc import NoResultFound
+import random
 
 def show_welcome_message():
     return {"message": "Welcome to MyAlbums_API!"}
@@ -16,5 +17,13 @@ def get_album_by_id(id):
         return album
     except NoResultFound:
         return None
+
+def get_random_album():
+    albums = get_all_albums()
+    random_album = random.choice(albums)
+    return random_album
+
+
+
 
 
