@@ -31,7 +31,15 @@ def create_album(data):
 
     return new_album
 
+def update_entire_album(album_id, data):
+    album = get_album_by_id(album_id)
 
+    album.artist = data["artist"]
+    album.title = data["title"]
+
+    db.session.commit()
+
+    return album
 
 
 
