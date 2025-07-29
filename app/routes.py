@@ -7,6 +7,7 @@ from app.services import (
     create_album,
     update_entire_album,
 )
+from utils.validate_album_data import validate_album_data
 
 
 api = Blueprint('api', __name__)
@@ -49,18 +50,9 @@ def pick_random_album():
 def add_album():
     data = request.get_json()
 
-    if not data:
-        return jsonify({"error": "No input data provided"}), 400
-
-    required_fields = ("artist", "title")
-    missing_keys = [key for key in required_fields if key not in data]
-    empty_values = [key for key in required_fields if not data.get(key)]
-
-    if missing_keys:
-        return jsonify({"error": f"Missing keys: {', '.join(missing_keys)}"}), 400
-
-    if empty_values:
-        return jsonify({"error": f"Empty values for: {', '.join(empty_values)}"}), 400
+    validation_error = validate_album_data(data)
+    if validation_error:
+        return jsonify(validation_error), 400
 
     album = create_album(data)
 
@@ -78,18 +70,9 @@ curl -X POST http://localhost:5000/albums/ \
 def put_album(id):
     data = request.get_json()
 
-    if not data:
-        return jsonify({"error": "No input data provided"}), 400
-
-    required_fields = ("artist", "title")
-    missing_keys = [key for key in required_fields if key not in data]
-    empty_values = [key for key in required_fields if not data.get(key)]
-
-    if missing_keys:
-        return jsonify({"error": f"Missing keys: {', '.join(missing_keys)}"}), 400
-
-    if empty_values:
-        return jsonify({"error": f"Empty values for: {', '.join(empty_values)}"}), 400
+    validation_error = validate_album_data(data)
+    if validation_error:
+        return jsonify(validation_error), 400
 
     album = update_entire_album(album_id=id, data=data)
 
