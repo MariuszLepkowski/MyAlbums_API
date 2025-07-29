@@ -53,6 +53,19 @@ def update_album_partially(album_id, data):
 
     return album
 
+def delete_album_by_id(album_id):
+    album = get_album_by_id(album_id)
+
+    if album is None:
+        return None
+
+    db.session.delete(album)
+    db.session.commit()
+    return album
+
+
+
+
 
 
 

@@ -7,6 +7,7 @@ from app.services import (
     create_album,
     update_entire_album,
     update_album_partially,
+    delete_album_by_id,
 )
 from utils.validate_album_data import (
     validate_put_data,
@@ -108,4 +109,21 @@ def patch_album(id):
 curl -X PATCH http://localhost:5000/albums/156 \
 -H "Content-Type: application/json" \
 -d '{"artist": "patch_test", "title": "patch_test"}'
+"""
+
+@api.route('/albums/<int:id>', methods=['DELETE'])
+def delete_album(id):
+    album = delete_album_by_id(id)
+
+    if album is None:
+        return jsonify({
+            "error":"The album with requested id does not exist."
+        }), 404
+
+    return jsonify({
+        "message": f"Successfully deleted album with id: {album.id} {album.artist} {album.title}"
+    }), 200
+
+"""
+curl -X DELETE http://localhost:5000/albums/<album_id>
 """
