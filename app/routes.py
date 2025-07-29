@@ -6,8 +6,12 @@ from app.services import (
     get_random_album,
     create_album,
     update_entire_album,
+    update_album_partially,
 )
-from utils.validate_album_data import validate_album_data
+from utils.validate_album_data import (
+    validate_put_data,
+    validate_patch_data,
+)
 
 
 api = Blueprint('api', __name__)
@@ -50,7 +54,7 @@ def pick_random_album():
 def add_album():
     data = request.get_json()
 
-    validation_error = validate_album_data(data)
+    validation_error = validate_put_data(data)
     if validation_error:
         return jsonify(validation_error), 400
 
@@ -70,7 +74,7 @@ curl -X POST http://localhost:5000/albums/ \
 def put_album(id):
     data = request.get_json()
 
-    validation_error = validate_album_data(data)
+    validation_error = validate_put_data(data)
     if validation_error:
         return jsonify(validation_error), 400
 
@@ -84,4 +88,24 @@ def put_album(id):
 curl -X PUT http://localhost:5000/albums/156 \
 -H "Content-Type: application/json" \
 -d '{"artist": "put_test", "title": "put_test"}'
+"""
+
+@api.route('/albums/<int:id>', methods=['PATCH'])
+def patch_album(id):
+    data = request.get_json()
+
+    validation_error = validate_patch_data(data)
+    if validation_error:
+        return jsonify(validation_error), 400
+
+    album = update_album_partially(album_id=id, data=data)
+
+    return jsonify({
+        "message": f"Successfully updated album with id: {album.id}"
+    })
+
+"""
+curl -X PATCH http://localhost:5000/albums/156 \
+-H "Content-Type: application/json" \
+-d '{"artist": "patch_test", "title": "patch_test"}'
 """

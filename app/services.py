@@ -41,5 +41,18 @@ def update_entire_album(album_id, data):
 
     return album
 
+def update_album_partially(album_id, data):
+    album = get_album_by_id(album_id)
+
+    if 'artist' in data and data["artist"]:
+        album.artist = data["artist"]
+    if 'title' in data and data["title"]:
+        album.title = data["title"]
+
+    db.session.commit()
+
+    return album
+
+
 
 
