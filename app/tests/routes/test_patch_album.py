@@ -1,0 +1,61 @@
+from unittest.mock import patch, MagicMock
+
+
+@patch('app.services.get_album_by_id')
+def test_patch_album_with_valid_data(mock_get_album_by_id, client):
+    mock_album = MagicMock()
+    mock_album.id = 1
+    mock_album.artist = 'Peter Gabriel'
+    mock_album.title = 'So'
+    mock_get_album_by_id.return_value = mock_album
+
+    response = client.patch("/albums/1", json={
+        "title": "Us"
+    })
+
+    assert response.status_code == 200
+    assert response.json["message"] == "Successfully updated album with id: 1"
+
+@patch('app.services.get_album_by_id')
+def test_patch_album_with_no_data(mock_get_album_by_id, client):
+    mock_album = MagicMock()
+    mock_album.id = 1
+    mock_album.artist = 'Peter Gabriel'
+    mock_album.title = 'So'
+    mock_get_album_by_id.return_value = mock_album
+
+    response = client.patch("/albums/1", json={})
+
+    assert response.status_code == 400
+    assert response.json["error"] == "No input data provided"
+
+@patch('app.services.get_album_by_id')
+def test_patch_album_with_no_values(mock_get_album_by_id, client):
+    mock_album = MagicMock()
+    mock_album.id = 1
+    mock_album.artist = 'Peter Gabriel'
+    mock_album.title = 'So'
+    mock_get_album_by_id.return_value = mock_album
+
+    response = client.patch("/albums/1", json={
+        "artist": "",
+        "title": ""
+    })
+
+    assert response.status_code == 400
+    assert response.json["error"] == "Empty values for: artist, title"
+
+@patch('app.services.get_album_by_id')
+def test_patch_album_with_unknown_fields(mock_get_album_by_id, client):
+    mock_album = MagicMock()
+    mock_album.id = 1
+    mock_album.artist = 'Peter Gabriel'
+    mock_album.title = 'So'
+    mock_get_album_by_id.return_value = mock_album
+
+    response = client.patch("/albums/1", json={
+        "year": 1985
+    })
+
+    assert response.status_code == 400
+    assert response.json["error"] == "Unknown fields: year"

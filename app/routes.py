@@ -103,7 +103,7 @@ def patch_album(id):
 
     return jsonify({
         "message": f"Successfully updated album with id: {album.id}"
-    })
+    }), 200
 
 """
 curl -X PATCH http://localhost:5000/albums/156 \
