@@ -9,7 +9,7 @@ def test_put_album_with_valid_data(mock_get_album_by_id, client):
     mock_album.title = 'So'
     mock_get_album_by_id.return_value = mock_album
 
-    response = client.patch('albums/1', json={
+    response = client.put('albums/1', json={
         "artist": "Sting",
         "title": "Soul Cages"
     })
@@ -26,7 +26,7 @@ def test_put_album_with_empty_data(mock_get_album_by_id, client):
     mock_album.title = 'So'
     mock_get_album_by_id.return_value = mock_album
 
-    response = client.patch('albums/1', json={})
+    response = client.put('albums/1', json={})
 
     assert response.status_code == 400
     assert response.json['error'] == "No input data provided"
@@ -39,7 +39,7 @@ def test_put_album_with_empty_values(mock_get_album_by_id, client):
     mock_album.title = 'So'
     mock_get_album_by_id.return_value = mock_album
 
-    response = client.post('/albums/', json={
+    response = client.put('/albums/1', json={
         "artist": "",
         "title": ""
     })
@@ -55,7 +55,7 @@ def test_put_album_with_empty_keys(mock_get_album_by_id, client):
     mock_album.title = 'So'
     mock_get_album_by_id.return_value = mock_album
 
-    response = client.post('/albums/', json={
+    response = client.put('/albums/1', json={
         "artist": "Sting",
     })
 
