@@ -33,6 +33,8 @@ def create_album(data):
 
 def update_entire_album(album_id, data):
     album = get_album_by_id(album_id)
+    if album is None:
+        return None
 
     album.artist = data["artist"]
     album.title = data["title"]
