@@ -45,6 +45,8 @@ def update_entire_album(album_id, data):
 
 def update_album_partially(album_id, data):
     album = get_album_by_id(album_id)
+    if album is None:
+        return None
 
     if 'artist' in data and data["artist"]:
         album.artist = data["artist"]

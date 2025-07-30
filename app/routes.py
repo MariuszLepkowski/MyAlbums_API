@@ -106,6 +106,11 @@ def patch_album(id):
 
     album = update_album_partially(album_id=id, data=data)
 
+    if album is None:
+        return jsonify({
+            "error":"The album with requested id does not exist."
+        }), 404
+
     return jsonify({
         "message": f"Successfully updated album with id: {album.id}"
     }), 200
