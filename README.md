@@ -1,7 +1,7 @@
 ## Requirements
 
 - Python 3.10+
-- (Optional) Docker
+- Docker
 
 
 ## Setup 
