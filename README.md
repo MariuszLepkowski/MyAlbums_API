@@ -8,16 +8,22 @@
 ```bash
 # Clone the repo
 git clone https://github.com/MariuszLepkowski/MyAlbums_API
+cd MyAlbums_API
 ```
+## Configure environment variables
 
+Before starting the application, create a .env file in the root directory based on the provided .env-example.
+```bash
+cp .env-example .env
+```
 ## Run with Docker
 
 ```bash
 # Start the app
-docker-compose up
+docker compose up
 
 # Stop the app
-docker-compose down
+docker compose down
 ```
 Visit: http://localhost:5000
 
@@ -43,7 +49,7 @@ To begin using the database:
 ## 1. Initialize database (tables)
 
 ```commandline
-docker-compose exec web flask shell
+docker compose exec web flask shell
 ```
 
 Inside the shell:
@@ -54,6 +60,14 @@ db.create_all()
 
 That will create all tables in the connected Postgres DB.
 
+## Load initial data from CSV
+
+Still inside the container, run the internal utility to import albums from CSV:
+```commandline
+from app.utils import load_csv
+load_csv()
+```
+
 ## Optional: Database Migrations with Flask-Migrate
 
 This project includes Flask-Migrate for database version control.
@@ -62,14 +76,14 @@ It allows you to update database schema safely as models evolve.
 ## 1. Initialize migrations (only once):
 
 ```commandline
-docker-compose exec web flask db init
+docker compose exec web flask db init
 ```
 
 ##  2. After changing or adding models:
 
 ```commandline
-docker-compose exec web flask db migrate -m "Describe your changes"
-docker-compose exec web flask db upgrade
+docker compose exec web flask db migrate -m "Describe your changes"
+docker compose exec web flask db upgrade
 ```
 
 This will generate and apply Alembic migrations inside the migrations/ directory.
