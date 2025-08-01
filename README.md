@@ -62,10 +62,14 @@ That will create all tables in the connected Postgres DB.
 
 ## Load initial data from CSV
 
-Still inside the container, run the internal utility to import albums from CSV:
 ```commandline
-from app.utils import load_csv
-load_csv()
+docker compose exec web flask shell
+```
+
+Inside the shell:
+```commandline
+from utils.load_csv import load_albums_from_csv
+load_albums_from_csv()
 ```
 
 ## Optional: Database Migrations with Flask-Migrate
